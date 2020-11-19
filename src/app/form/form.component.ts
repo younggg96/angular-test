@@ -10,7 +10,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./form.component.css']
 })
 export class FormComponent implements OnInit {
-  registerForm: FormGroup;
+  registerForm1: FormGroup;
+  registerForm2: FormGroup;
+  registerForm3: FormGroup;
+  registerForm4: FormGroup;
+  registerForm5: FormGroup;
+  registerForm6: FormGroup;
   submitted = false;
   str: any;
   formObject: Object = {
@@ -80,7 +85,7 @@ export class FormComponent implements OnInit {
   constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit() {
-    this.registerForm = this.formBuilder.group({
+    this.registerForm1 = this.formBuilder.group({
       FirstName: ['', Validators.required, Validators.maxLength(20)],
       MiddelName: ['', Validators.required, Validators.maxLength(2)],
       LastName: ['', Validators.required, Validators.maxLength(25)],
@@ -89,7 +94,9 @@ export class FormComponent implements OnInit {
       Address2: ['', Validators.required, Validators.maxLength(100)],
       City: ['', Validators.required, Validators.maxLength(30)],
       State: ['', Validators.required, Validators.maxLength(3)],
-      ZipCode: ['', Validators.required],
+      ZipCode: ['', Validators.required]
+    });
+    this.registerForm2 = this.formBuilder.group({
       // Business Data
       BusinessLegalName: ['', Validators.required, Validators.maxLength(255)],
       DoingBusinessAs: ['', Validators.required],
@@ -105,6 +112,8 @@ export class FormComponent implements OnInit {
       BusinessCity: ['', Validators.required],
       BusinessState: ['', Validators.required],
       BusinessZipCode: ['', Validators.required],
+    });
+    this.registerForm3 = this.formBuilder.group({
       // Account Payment 
       NameOnCard: ['', Validators.required],
       CreditCardNumber: ['', Validators.required],
@@ -112,12 +121,16 @@ export class FormComponent implements OnInit {
       AccountNumber: ['', Validators.required],
       RoutingNumber: ['', Validators.required],
       AccountType: ['', Validators.required],
+    });
+    this.registerForm4 = this.formBuilder.group({
       // Mailing Address
       MailAddress1: ['', Validators.required],
       MailAddress2: ['', Validators.required],
       MailCity: ['', Validators.required],
       MailState: ['', Validators.required],
       MailZipCode: ['', Validators.required],
+    });
+    this.registerForm5 = this.formBuilder.group({
       // Primary Account
       PrimaryAccountCountryCode: ['', Validators.required],
       PrimaryAccountName: ['', Validators.required],
@@ -126,6 +139,8 @@ export class FormComponent implements OnInit {
       PrimaryAccountType: ['', Validators.required],
       PrimaryBankName: ['', Validators.required],
       PrimaryRoutingNumber: ['', Validators.required],
+    });
+    this.registerForm6 = this.formBuilder.group({
       // Bank Account Ownership Details
       BankAccountFirstName: ['', Validators.required],
       BankAccountLastName: ['', Validators.required],
@@ -135,29 +150,51 @@ export class FormComponent implements OnInit {
       BankAccountPostalCode: ['', Validators.required],
       BankAccountCountry: ['', Validators.required],
       BankAccountPhone: ['', Validators.required],
-      
+
       AcceptTerms: [false, Validators.requiredTrue],
     });
   }
 
   // convenience getter for easy access to form fields
-  get f() { return this.registerForm.controls; }
+  get f() {
+    return {
+      form1: this.registerForm1.controls,
+      form2: this.registerForm2.controls,
+      form3: this.registerForm3.controls,
+      form4: this.registerForm4.controls,
+      form5: this.registerForm5.controls,
+      form6: this.registerForm6.controls
+    }
+  }
 
   onSubmit() {
     this.submitted = true;
 
-    // stop here if form is invalid
-    if (this.registerForm.invalid) {
+    if (this.registerForm1.invalid && this.registerForm2.invalid && this.registerForm3.invalid
+      && this.registerForm3.invalid && this.registerForm4.invalid && this.registerForm5.invalid && this.registerForm6.invalid
+    ) {
       return;
     }
 
-    
-    this.str = JSON.stringify(this.registerForm.value, null, 4);
-    alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.registerForm.value, null, 4));
+    this.formObject = {
+      PersonalData: this.registerForm1.value,
+      BusinessData: this.registerForm2.value,
+      AccountPayment: this.registerForm3.value,
+      MailingAddress: this.registerForm4.value,
+      PrimaryAccount: this.registerForm5.value,
+      BankAccountOwnershipDetails: this.registerForm6.value
+    }
+    this.str = JSON.stringify(this.formObject, null, 4);
+    alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.formObject, null, 4));
   }
 
   onReset() {
     this.submitted = false;
-    this.registerForm.reset();
+    this.registerForm1.reset();
+    this.registerForm2.reset();
+    this.registerForm3.reset();
+    this.registerForm4.reset();
+    this.registerForm5.reset();
+    this.registerForm6.reset();
   }
 }
