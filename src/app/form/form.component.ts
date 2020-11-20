@@ -18,7 +18,7 @@ export class FormComponent implements OnInit {
   registerForm6: FormGroup;
   submitted = false;
   str: any;
-  formObject: Object = {
+  formObject = {
     PersonalData: {
       FirstName: '',
       MiddelName: '',
@@ -86,19 +86,19 @@ export class FormComponent implements OnInit {
 
   ngOnInit() {
     this.registerForm1 = this.formBuilder.group({
-      FirstName: ['', Validators.required, Validators.maxLength(20)],
-      MiddelName: ['', Validators.required, Validators.maxLength(2)],
-      LastName: ['', Validators.required, Validators.maxLength(25)],
-      Email: ['', [Validators.required, Validators.email, Validators.maxLength(55)]],
-      Address1: ['', Validators.required, Validators.maxLength(100)],
-      Address2: ['', Validators.required, Validators.maxLength(100)],
-      City: ['', Validators.required, Validators.maxLength(30)],
-      State: ['', Validators.required, Validators.maxLength(3)],
+      FirstName: ['', Validators.compose([Validators.required, Validators.maxLength(20)])],
+      MiddelName: ['', Validators.compose([Validators.required, Validators.maxLength(2)])],
+      LastName: ['', Validators.compose([Validators.required, Validators.maxLength(25)])],
+      Email: ['', Validators.compose([Validators.required, Validators.email, Validators.maxLength(55)])],
+      Address1: ['', Validators.compose([Validators.required, Validators.maxLength(100)])],
+      Address2: ['', Validators.compose([Validators.required, Validators.maxLength(100)])],
+      City: ['', Validators.compose([Validators.required, Validators.maxLength(30)])],
+      State: ['', Validators.compose([Validators.required, Validators.maxLength(3)])],
       ZipCode: ['', Validators.required]
     });
     this.registerForm2 = this.formBuilder.group({
       // Business Data
-      BusinessLegalName: ['', Validators.required, Validators.maxLength(255)],
+      BusinessLegalName: ['', Validators.compose([Validators.required, Validators.maxLength(255)])],
       DoingBusinessAs: ['', Validators.required],
       EIN: ['', Validators.required],
       MerchantCategoryCode: ['', Validators.required],
@@ -153,6 +153,33 @@ export class FormComponent implements OnInit {
 
       AcceptTerms: [false, Validators.requiredTrue],
     });
+    this.registerForm1.valueChanges.subscribe(data => {
+      this.formObject.PersonalData = data;
+      this.str = JSON.stringify(this.formObject, null, 4);
+      console.log(JSON.stringify(this.formObject, null, 4));
+    })
+    this.registerForm2.valueChanges.subscribe(data => {
+      this.str = JSON.stringify(this.formObject, null, 4);
+      this.formObject.BusinessData = data;
+    })
+    this.registerForm3.valueChanges.subscribe(data => {
+      this.str = JSON.stringify(this.formObject, null, 4);
+      this.formObject.AccountPayment = data;
+    })
+    this.registerForm4.valueChanges.subscribe(data => {
+      this.str = JSON.stringify(this.formObject, null, 4);
+      this.formObject.MailingAddress = data;
+    })
+    this.registerForm5.valueChanges.subscribe(data => {
+      this.str = JSON.stringify(this.formObject, null, 4);
+      this.formObject.PrimaryAccount = data;
+    })
+    this.registerForm6.valueChanges.subscribe(data => {
+      this.str = JSON.stringify(this.formObject, null, 4);
+      this.formObject.BankAccountOwnershipDetails = data;
+    })
+    this.str = JSON.stringify(this.formObject, null, 4);
+    
   }
 
   // convenience getter for easy access to form fields
@@ -175,16 +202,6 @@ export class FormComponent implements OnInit {
     ) {
       return;
     }
-
-    this.formObject = {
-      PersonalData: this.registerForm1.value,
-      BusinessData: this.registerForm2.value,
-      AccountPayment: this.registerForm3.value,
-      MailingAddress: this.registerForm4.value,
-      PrimaryAccount: this.registerForm5.value,
-      BankAccountOwnershipDetails: this.registerForm6.value
-    }
-    this.str = JSON.stringify(this.formObject, null, 4);
     alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.formObject, null, 4));
   }
 
